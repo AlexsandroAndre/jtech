@@ -28,38 +28,30 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        /*http
-                .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.disable())
-                .formLogin(form -> form.disable())
-                .httpBasic(Customizer.withDefaults())
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                // habilita CORS do WebMvcConfigurer (seu WebConfig)
+                .cors(Customizer.withDefaults())
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
+                                // Swagger/OpenAPI
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
                                 "/swagger-resources/**",
-                                "/webjars/**",
-                                "/users/**",
-                                "/tasks/**"
+                                "/webjars/**"
                         ).permitAll()
-                        .anyRequest().permitAll()
-                );
+                        // Auth público (login/register etc)
+                        .requestMatchers("/auth/**").permitAll()
 
-        return http.build();*/
+                        // Users: permita buscar por e-mail e (opcionalmente) por id
+                        .requestMatchers("/api/users/email/**").authenticated()
+                        .requestMatchers("/api/users/**").authenticated()
 
-        http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/v3/api-docs/**",
-                                "/swagger-ui.html",
-                                "/swagger-ui/**",
-                                "/auth/**",
-                                "/api/users"
-                        ).permitAll()
+                        // Demais rotas precisam estar autenticadas
                         .anyRequest().authenticated()
                 )
-                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

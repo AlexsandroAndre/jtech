@@ -48,14 +48,13 @@ public class TasklistService implements ITaskService {
 
         TasklistEntity existing = findById(task.getId());
 
-        task.setId(existing.getId());
-        task.setTitle(existing.getTitle());
-        task.setUser(existing.getUser());
-        task.setUpdatedAt(LocalDateTime.now());
-        task.setCreatedAt(existing.getCreatedAt());
-        task.setCompleted(existing.isCompleted());
+        existing.setId(task.getId());
+        existing.setTitle(task.getTitle());
+        existing.setUser(task.getUser());
+        existing.setUpdatedAt(LocalDateTime.now());
+        existing.setCompleted(task.isCompleted());
 
-        return taskRepository.save(task);
+        return taskRepository.save(existing);
     }
 
     @Override

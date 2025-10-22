@@ -29,7 +29,7 @@ public class TasklistController {
         return ResponseEntity.ok(taskService.create(TasklistMapper.toEntity(task)));
     }
 
-    @PutMapping("/")
+    @PutMapping
     @Operation(summary = "Responsável por atualizar tarefa")
     public ResponseEntity<TasklistEntity> updateTask(@RequestBody TasklistRequest task) {
         return ResponseEntity.ok(taskService.update(TasklistMapper.toEntity(task)));

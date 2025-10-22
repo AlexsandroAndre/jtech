@@ -38,6 +38,13 @@ public class UserController {
         return ResponseEntity.ok(UserMapper.toResponse(user));
     }
 
+    @GetMapping("/email/{email:.+}")
+    @Operation(summary = "Responsável por retornar os dados do usuário por email")
+    public ResponseEntity<UserResponse> getByEmail(@PathVariable String email) {
+        User user = userService.findByEmail(email);
+        return ResponseEntity.ok(UserMapper.toResponse(user));
+    }
+
     @PutMapping("/{id}")
     @Operation(summary = "Responsável por atualizar os dados do usuário")
     public ResponseEntity<UserResponse> updateUser(@PathVariable UUID id, @RequestBody UserRequest userRequest) {
