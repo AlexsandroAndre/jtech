@@ -1,0 +1,4 @@
+security:
+  jwt:
+    secret: uH2gXwE5KMT9hLfr3jZ+3wqOo0M9T8GbZkZ3MPyI0h1N8YzzcI6WtdD9p6kYcBfP
+    expiration: 86400000 # 1 dia em milissegundos
